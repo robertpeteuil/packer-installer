@@ -8,7 +8,11 @@
 
 ---
 
-The **packer-install** script automates the process of downloading and installing Packer.  It provides an ideal method for installing on new hosts, installing updates and downgrading if necessary.  This script detects the latest version, OS and CPU-Architecture and allows installation to local or system locations.  Optional parameters allow installing a specific version and installing to /usr/local/bin without prompting.
+The **packer-install** script automates the process of downloading and installing Packer.  It provides an ideal method for installing on new hosts, installing updates and downgrading if necessary.
+
+This installer is similar to my [Terraform Installer](https://github.com/robertpeteuil/terraform-installer)
+
+This script detects the latest version, OS and CPU-Architecture and allows installation to local or system locations.  Optional parameters allow installing a specific version and installing to /usr/local/bin without prompting.
 
 Options:
 
@@ -40,7 +44,7 @@ Examples with Optional Parameters
 
 ``` shell
 # -i = Install specific version
-./packer-install.sh -i 0.11.1
+./packer-install.sh -i 1.2.3
 
 # -a = Automatic sudo install to /usr/local/bin/  (no user prompt)
 ./packer-install.sh -a
@@ -64,7 +68,7 @@ Optional
   - Uses Version specified by `-i VERSION` parameter (if specified)
   - Otherwise determines Latest Version
     - If `jq` installed parse version from hashicorp downloads
-    - Otherwise use GitHub API to retrieve latest version
+    - Otherwise use GitHub API to retrieve latest tag
 - Calculates Download URL based on Version, OS and CPU-Architecture
 - Verifies URL Validity before Downloading in Case:
   - VERSION incorrectly specified with `-i`
