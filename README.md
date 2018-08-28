@@ -21,6 +21,7 @@ Options:
   - allows for unattended installation via scripts or CD tools
   - can be set as default behavior by uncommenting line 12 (`sudoInstall=true`)
   - sudo password may be required unless NOPASSWD is enabled
+- `-c`:          leave binary in working directory (for CI/DevOps use)
 - `-h`:          help
 - `-v`:          display version
 
@@ -44,7 +45,7 @@ Examples with Optional Parameters
 
 ``` shell
 # -i = Install specific version
-./packer-install.sh -i 1.2.3
+./packer-install.sh -i 1.2.5
 
 # -a = Automatic sudo install to /usr/local/bin/  (no user prompt)
 ./packer-install.sh -a
