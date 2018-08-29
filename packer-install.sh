@@ -12,7 +12,7 @@
 # sudoInstall=true
 
 scriptname=$(basename "$0")
-scriptbuildnum="1.3.1"
+scriptbuildnum="1.3.2"
 scriptbuilddate="2018-08-28"
 
 
@@ -119,8 +119,6 @@ fi
 # DETERMINE DESTINATION
 if [[ "$cwdInstall" ]]; then
   BINDIR=$(pwd)
-  CMDPREFIX=""
-  STREAMLINED=true
 elif [[ -w "/usr/local/bin" ]]; then
   BINDIR="/usr/local/bin"
   CMDPREFIX=""
@@ -146,13 +144,15 @@ else
   fi
 fi
 
-# CREATE TMPDIR FOR EXTRACTION
-TMPDIR=${TMPDIR:-/tmp}
-UTILTMPDIR="packer_${VERSION}"
+if [[ ! "$cwdInstall" ]]; then
+  # CREATE TMPDIR FOR EXTRACTION
+  TMPDIR=${TMPDIR:-/tmp}
+  UTILTMPDIR="packer_${VERSION}"
 
-cd "$TMPDIR" || exit 1
-mkdir -p "$UTILTMPDIR"
-cd "$UTILTMPDIR" || exit 1
+  cd "$TMPDIR" || exit 1
+  mkdir -p "$UTILTMPDIR"
+  cd "$UTILTMPDIR" || exit 1
+fi
 
 # DOWNLOAD AND EXTRACT
 case "${nettool}" in
@@ -163,14 +163,18 @@ case "${nettool}" in
 esac
 unzip -qq "$FILENAME" || exit 1
 
-# COPY TO DESTINATION
-mkdir -p "${BINDIR}" || exit 1
-${CMDPREFIX} cp -f packer "$BINDIR" || exit 1
+if [[ ! "$cwdInstall" ]]; then
+  # COPY TO DESTINATION
+  mkdir -p "${BINDIR}" || exit 1
+  ${CMDPREFIX} cp -f packer "$BINDIR" || exit 1
 
-# CLEANUP AND EXIT
-cd "${TMPDIR}" || exit 1
-rm -rf "${UTILTMPDIR}"
-[[ ! "$STREAMLINED" ]] && echo
-echo "Packer Version ${VERSION} installed to ${BINDIR}"
+  # CLEANUP AND EXIT
+  cd "${TMPDIR}" || exit 1
+  rm -rf "${UTILTMPDIR}"
+  [[ ! "$STREAMLINED" ]] && echo
+  echo "Packer Version ${VERSION} installed to ${BINDIR}"
+else
+  echo "Terraform Version ${VERSION} downloaded"
+fi
 
 exit 0
