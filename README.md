@@ -10,8 +10,6 @@
 
 The **packer-install** script automates the process of downloading and installing Packer.  It provides an ideal method for installing on new hosts, installing updates and downgrading if necessary.
 
-This installer is similar to my [Terraform Installer](https://github.com/robertpeteuil/terraform-installer)
-
 This script detects the latest version, OS and CPU-Architecture and allows installation to local or system locations.  Optional parameters allow installing a specific version and installing to /usr/local/bin without prompting.
 
 Options:
@@ -25,30 +23,28 @@ Options:
 - `-h`:          help
 - `-v`:          display version
 
-### Installation using this Installer
+This installer is similar to my [Terraform Installer](https://github.com/robertpeteuil/terraform-installer)
 
-Download the installer with `curl` or `wget` and make executable
+## Use
+
+### Local download
+
+Download the installer with `curl`, make executable and run:
 
 ``` shell
 curl -LO https://raw.github.com/robertpeteuil/packer-installer/master/packer-install.sh
-# OR wget https://raw.github.com/robertpeteuil/packer-installer/master/packer-install.sh
+
 chmod +x packer-install.sh
+
+./packer-installer.sh
 ```
 
-Run the installer
+### Running via macOS brew
+
+This installer can be ran as a [brew](https://brew.sh/) formula.  Unlike the official Brew Packer formula, this does not compile from source so it doesn't have dependancies on `go` and `gox`.
 
 ``` shell
-./packer-install.sh
-```
-
-Examples with Optional Parameters
-
-``` shell
-# -i = Install specific version
-./packer-install.sh -i 1.2.5
-
-# -a = Automatic sudo install to /usr/local/bin/  (no user prompt)
-./packer-install.sh -a
+brew install robpco/tap/packer
 ```
 
 ### System Requirements
