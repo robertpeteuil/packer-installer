@@ -36,7 +36,7 @@ curl -LO https://raw.github.com/robertpeteuil/packer-installer/master/packer-ins
 
 chmod +x packer-install.sh
 
-./packer-installer.sh
+./packer-install.sh
 ```
 
 ### Running via macOS brew
