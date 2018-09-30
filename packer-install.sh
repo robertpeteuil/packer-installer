@@ -12,9 +12,8 @@
 # sudoInstall=true
 
 scriptname=$(basename "$0")
-scriptbuildnum="1.3.3"
-scriptbuilddate="2018-09-04"
-
+scriptbuildnum="1.4.0"
+scriptbuilddate="2018-09-30"
 
 # CHECK DEPENDANCIES AND SET NET RETRIEVAL TOOL
 if ! unzip -h 2&> /dev/null; then
@@ -95,14 +94,21 @@ else
 fi
 [[ $PROC =~ arm ]] && PROC="arm"  # Packer downloads use "arm" not full arm type
 
-# CREATE FILENAME AND DOWNLOAD LINK BASED ON GATHERED PARAMETERS
+# CREATE FILENAME AND URL FROM GATHERED PARAMETERS
 FILENAME="packer_${VERSION}_${OS}_${PROC}.zip"
 LINK="https://releases.hashicorp.com/packer/${VERSION}/${FILENAME}"
+SHALINK="https://releases.hashicorp.com/packer/${VERSION}/packer_${VERSION}_SHA256SUMS"
+
+# TEST CALCULATED LINKS
 case "${nettool}" in
   wget*)
-    LINKVALID=$(wget --spider -S "$LINK" 2>&1 | grep "HTTP/" | awk '{print $2}') ;;
+    LINKVALID=$(wget --spider -S "$LINK" 2>&1 | grep "HTTP/" | awk '{print $2}')
+    SHALINKVALID=$(wget --spider -S "$SHALINK" 2>&1 | grep "HTTP/" | awk '{print $2}')
+    ;;
   curl*)
-    LINKVALID=$(curl -o /dev/null --silent --head --write-out '%{http_code}\n' "$LINK") ;;
+    LINKVALID=$(curl -o /dev/null --silent --head --write-out '%{http_code}\n' "$LINK")
+    SHALINKVALID=$(curl -o /dev/null --silent --head --write-out '%{http_code}\n' "$SHALINK")
+    ;;
 esac
 
 # VERIFY LINK VALIDITY
@@ -113,6 +119,13 @@ if [[ "$LINKVALID" != 200 ]]; then
   echo -e "\tOS:\t$OS"
   echo -e "\tPROC:\t$PROC"
   echo -e "\tURL:\t$LINK"
+  exit 1
+fi
+
+# VERIFY SHA LINK VALIDITY
+if [[ "$SHALINKVALID" != 200 ]]; then
+  echo -e "Cannot Install - URL for Checksum File Invalid"
+  echo -e "\tURL:\t$SHALINK"
   exit 1
 fi
 
@@ -144,8 +157,8 @@ else
   fi
 fi
 
+# CREATE TMPDIR FOR EXTRACTION
 if [[ ! "$cwdInstall" ]]; then
-  # CREATE TMPDIR FOR EXTRACTION
   TMPDIR=${TMPDIR:-/tmp}
   UTILTMPDIR="packer_${VERSION}"
 
@@ -154,13 +167,31 @@ if [[ ! "$cwdInstall" ]]; then
   cd "$UTILTMPDIR" || exit 1
 fi
 
-# DOWNLOAD AND EXTRACT
+# DOWNLOAD ZIP AND CHECKSUM FILES
 case "${nettool}" in
   wget*)
-    wget -q "$LINK" -O "$FILENAME" ;;
+    wget -q "$LINK" -O "$FILENAME"
+    wget -q "$SHALINK" -O SHAFILE
+    ;;
   curl*)
-    curl -s -o "$FILENAME" "$LINK" ;;
+    curl -s -o "$FILENAME" "$LINK"
+    curl -s -o SHAFILE "$SHALINK"
+    ;;
 esac
+
+# VERIFY ZIP CHECKSUM
+if shasum -h 2&> /dev/null; then
+  expected_sha=$(cat SHAFILE | grep "$FILENAME" | awk '{print $1}')
+  download_sha=$(shasum -a 256 "$FILENAME" | cut -d' ' -f1)
+  if [ $expected_sha != $download_sha ]; then
+    echo "Download Checksum Incorrect"
+    echo "Expected: $expected_sha"
+    echo "Actual: $download_sha"
+    exit 1
+  fi
+fi
+
+# EXTRACT ZIP
 unzip -qq "$FILENAME" || exit 1
 
 if [[ ! "$cwdInstall" ]]; then
