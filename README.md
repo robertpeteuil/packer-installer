@@ -23,31 +23,39 @@ Options:
 - `-h`:          help
 - `-v`:          display version
 
-This installer is similar to my [Terraform Installer](https://github.com/robertpeteuil/terraform-installer)
+This installer is similar to my [Terraform Installer](https://github.com/robertpeteuil/terraform-installer) and [Vault Installer](https://github.com/robertpeteuil/vault-installer)
 
-## Use
+## Install
 
-### Local download
-
-Download the installer with `curl`, make executable and run:
+Download Installer
 
 ``` shell
 curl -LO https://raw.github.com/robertpeteuil/packer-installer/master/packer-install.sh
-
 chmod +x packer-install.sh
-
-./packer-install.sh
 ```
 
-### Running via macOS brew
+## Use
 
-This installer can be ran as a [brew](https://brew.sh/) formula.  Unlike the official Brew Packer formula, this does not compile from source so it doesn't have dependancies on `go` and `gox`.
+### Run local installer
 
 ``` shell
-brew install robpco/tap/packer
+./packer-install.sh
+
+# usage: packer-install.sh [-i VERSION] [-a] [-c] [-h] [-v]
+#      -i VERSION	: specify version to install in format '' (OPTIONAL)
+#      -a		: automatically use sudo to install to /usr/local/bin
+#      -c		: leave binary in working directory (for CI/DevOps use)
+#      -h		: help
+#      -v		: display vault-install.sh version
 ```
 
-### System Requirements
+### Express install via `iac.sh` or `https://iac.sh` (my bootstrap server)
+
+``` shell
+curl iac.sh/packer | sh   # run without '| sh' to view & verify script
+```
+
+## System Requirements
 
 - System with Bash Shell (Linux, macOS, Windows Subsystem for Linux)
 - `unzip` - packer downloads are in zip format
@@ -59,7 +67,7 @@ Optional
   - Useful if latest github release differs from version on hashicorp downloads
   - Avoids github api limit of 60 requests per hour (unauthenticated)
 
-### Script Process Details
+## Script Process Details
 
 - Determines Version to Download and Install
   - Uses Version specified by `-i VERSION` parameter (if specified)
@@ -75,7 +83,7 @@ Optional
 - Installation Process
   - Download, Extract, Install, Cleanup and Display Results
 
-#### CPU Architecture Detection
+### CPU Architecture Detection
 
 CPU architecture is detected for each OS accordingly:
 
@@ -86,4 +94,4 @@ CPU architecture is detected for each OS accordingly:
 
 ### License
 
-Apache 2.0 License - Copyright (c) 2018    Robert Peteuil
+Apache 2.0 License - Copyright (c) 2019    Robert Peteuil
