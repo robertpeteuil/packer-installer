@@ -1,4 +1,4 @@
-# Packer Installer - Automated Packer Installation
+# Installer for HashiCorp Packer - Automated Installation
 
 ## Automatically Download, Extract and Install Latest or Specific Version
 
