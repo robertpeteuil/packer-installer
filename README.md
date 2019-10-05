@@ -25,12 +25,6 @@ Options:
 
 This installer is similar to my [Terraform Installer](https://github.com/robertpeteuil/terraform-installer) and [Vault Installer](https://github.com/robertpeteuil/vault-installer)
 
-## Express install latest version via my bootstrap server (iac.sh or https://iac.sh)
-
-``` shell
-curl iac.sh/packer | sh
-```
-
 ## Download and Use Locally
 
 Download Installer
@@ -43,8 +37,9 @@ chmod +x packer-install.sh
 Download installer via my bootstrap server (iac.sh or https://iac.sh)
 
 ``` shell
-curl iac.sh/packer.sh | sh
-# installer downloaded as packer-install.sh to current directory
+curl iac.sh/packer > getinst.sh
+bash getinst.sh
+# installer downloaded as packer-install.sh in current directory
 ```
 
 ### Run local installer
