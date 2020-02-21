@@ -14,8 +14,8 @@ set -e
 # sudoInstall=true
 
 scriptname=$(basename "$0")
-scriptbuildnum="1.5.1"
-scriptbuilddate="2019-04-07"
+scriptbuildnum="1.5.2"
+scriptbuilddate="2020-02-20"
 
 # CHECK DEPENDANCIES AND SET NET RETRIEVAL TOOL
 if ! unzip -h 2&> /dev/null; then
@@ -210,7 +210,7 @@ unzip -qq "$FILENAME" || exit 1
 if [[ ! "$cwdInstall" ]]; then
   # COPY TO DESTINATION
   mkdir -p "${BINDIR}" || exit 1
-  ${CMDPREFIX} cp -f packer "$BINDIR" || exit 1
+  ${CMDPREFIX} mv packer "$BINDIR" || exit 1
 
   # CLEANUP AND EXIT
   cd "${TMPDIR}" || exit 1
