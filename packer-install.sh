@@ -218,7 +218,7 @@ if [[ ! "$cwdInstall" ]]; then
   [[ ! "$STREAMLINED" ]] && echo
   echo "Packer Version ${VERSION} installed to ${BINDIR}"
 else
-  echo "Terraform Version ${VERSION} downloaded"
+  echo "Packer Version ${VERSION} downloaded"
 fi
 
 exit 0
