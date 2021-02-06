@@ -205,7 +205,7 @@ if shasum -h 2&> /dev/null; then
 fi
 
 # EXTRACT ZIP
-unzip -qq "$FILENAME" || exit 1
+unzip -f -qq "$FILENAME" || exit 1
 
 if [[ ! "$cwdInstall" ]]; then
   # COPY TO DESTINATION
