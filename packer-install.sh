@@ -14,8 +14,8 @@ set -e
 # sudoInstall=true
 
 scriptname=$(basename "$0")
-scriptbuildnum="1.5.3"
-scriptbuilddate="2020-06-25"
+scriptbuildnum="1.5.5"
+scriptbuilddate="2021-04-14"
 
 # CHECK DEPENDANCIES AND SET NET RETRIEVAL TOOL
 if ! unzip -h 2&> /dev/null; then
@@ -205,7 +205,7 @@ if shasum -h 2&> /dev/null; then
 fi
 
 # EXTRACT ZIP
-unzip -f -qq "$FILENAME" || exit 1
+unzip -qq "$FILENAME" || exit 1
 
 if [[ ! "$cwdInstall" ]]; then
   # COPY TO DESTINATION
