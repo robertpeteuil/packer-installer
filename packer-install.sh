@@ -93,7 +93,7 @@ done
 shift $((OPTIND-1))
 
 # POPULATE VARIABLES NEEDED TO CREATE DOWNLOAD URL AND FILENAME
-if [[ -z "$VERSION" ]]; then
+if [[ -z "$VERSION" || "$VERSION" == "latest" ]]; then
   VERSION=$(getLatest)
 fi
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
